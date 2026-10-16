@@ -1,26 +1,190 @@
 @import "tailwindcss";
 
+@theme {
+  --color-background: #070d18;
+  --color-foreground: #f8fafc;
+  --color-primary: #3b82f6;
+  --color-secondary: #0ea5e9;
+  --color-accent: #6366f1;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #070d18;
+  --foreground: #f8fafc;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Smooth scroll offset for sticky nav ── */
+[id] {
+  scroll-margin-top: 80px;
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(59,130,246,0.35);
+  color: #fff;
+}
+
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #070d18; }
+::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+
+/* ── Glass utility ── */
+.glass {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ── Glow utility ── */
+.glow {
+  box-shadow: 0 0 20px rgba(59,130,246,0.35);
+}
+
+/* ── Modal slide-in animation ── */
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-in.slide-in {
+  animation: modalIn 0.28s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+/* ── Slide-up / Fade-in ── */
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-slide-up { animation: slideUp 0.8s ease-out forwards; }
+.animate-fade-in  { animation: fadeIn  1s   ease-out forwards; }
+
+/* ── Ambient floating keyframe for decorative elements ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ── Aurora Borealis Animations ── */
+@keyframes aurora-wave-1 {
+  0%, 100% {
+    transform: translate(0%, 0%) scale(1) rotate(0deg) skew(0deg);
+    opacity: 0.7;
+    border-radius: 50%;
+  }
+  25% {
+    transform: translate(-3%, -4%) scale(1.1) rotate(3deg) skew(-2deg);
+    opacity: 0.9;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  }
+  50% {
+    transform: translate(2%, 3%) scale(0.95) rotate(-2deg) skew(3deg);
+    opacity: 0.8;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  75% {
+    transform: translate(-1%, 2%) scale(1.05) rotate(1deg) skew(-1deg);
+    opacity: 0.95;
+    border-radius: 30% 70% 50% 50% / 50% 40% 60% 50%;
+  }
+}
+
+@keyframes aurora-wave-2 {
+  0%, 100% {
+    transform: translate(0%, 0%) scale(1) rotate(0deg);
+    opacity: 0.6;
+    border-radius: 50%;
+  }
+  33% {
+    transform: translate(4%, 3%) scale(0.95) rotate(-4deg);
+    opacity: 0.85;
+    border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%;
+  }
+  66% {
+    transform: translate(-3%, -2%) scale(1.08) rotate(3deg);
+    opacity: 0.75;
+    border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%;
+  }
+}
+
+@keyframes aurora-wave-3 {
+  0%, 100% {
+    transform: translate(0%, 0%) scale(1) rotate(0deg);
+    opacity: 0.5;
+    border-radius: 50%;
+  }
+  33% {
+    transform: translate(-2%, 4%) scale(1.12) rotate(2deg);
+    opacity: 0.8;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+  66% {
+    transform: translate(3%, -3%) scale(0.98) rotate(-2deg);
+    opacity: 0.65;
+    border-radius: 70% 30% 40% 60% / 50% 70% 30% 50%;
+  }
+}
+
+@keyframes aurora-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.aurora-layer-1 {
+  animation: aurora-wave-1 18s ease-in-out infinite alternate;
+}
+
+.aurora-layer-2 {
+  animation: aurora-wave-2 22s ease-in-out infinite alternate;
+}
+
+.aurora-layer-3 {
+  animation: aurora-wave-3 20s ease-in-out infinite alternate;
+}
+
+.aurora-gradient-flow {
+  background-size: 200% 200%;
+  animation: aurora-flow 15s ease infinite;
 }

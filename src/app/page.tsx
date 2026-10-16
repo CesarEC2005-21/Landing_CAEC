@@ -1,69 +1,1122 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useState, useEffect } from "react";
+import {
+  ChevronRight,
+  Code,
+  Cpu,
+  Globe,
+  Layers,
+  MessageCircle,
+  Smartphone,
+  Zap,
+  X,
+  ExternalLink,
+  Sun,
+  Moon,
+  Sparkles,
+  CheckCircle2,
+  ShieldCheck,
+  Award,
+  ArrowRight,
+} from "lucide-react";
+import HeroStudio3D from "@/components/HeroStudio3D";
+
+// ── Project data with images ────────────────────────────────────────────
+interface Project {
+  id: number;
+  title: string;
+  subtitle: string;
+  tag1: string;
+  tag2: string;
+  desc: string;
+  longDesc: string;
+  images: string[];
+  tech: string[];
+  link?: string;
+}
+
+const PROJECTS: Project[] = [
+  {
+    id: 1,
+    title: "Plataforma Comercial E-Commerce",
+    subtitle: "Página Web, App Móvil e Intranet Comercial",
+    tag1: "Web + Móvil",
+    tag2: "Intranet & Pagos",
+    desc: "Plataforma integral de comercio digital que combina sitio web de alta conversión, aplicación móvil y un sistema intranet con catálogo y cotizador en línea.",
+    longDesc: "Desarrollamos una solución integral de comercio omnicanal que sincroniza página web de alto rendimiento, app móvil para clientes y una intranet administrativa con gestión de cotizaciones, pedidos, inventario en tiempo real y pasarelas de cobro seguras.",
+    images: [
+      "/cotizador/Inicio.png",
+      "/cotizador/Nosotros.png",
+      "/cotizador/Productos.png",
+      "/cotizador/App movil.png",
+    ],
+    tech: ["Next.js", "React Native", "TypeScript", "Laravel", "PostgreSQL", "Pasarela de Pagos"],
+    link: "https://ddsp.sanchezpharma.com/",
+  },
+  {
+    id: 2,
+    title: "LogiCore — Sistema de Logística y Transporte",
+    subtitle: "Plataforma Integral para Drogueria Sánchez Pharma",
+    tag1: "Laravel",
+    tag2: "PHP",
+    desc: "Sistema ERP a medida con gestión de pedidos, almacén, transporte, reportes avanzados y backups automáticos.",
+    longDesc: "Desarrollamos LogiCore, una plataforma integral de logística y transporte para Drogueria Sánchez Pharma. Incluye módulos de Almacén, Pedidos, Post-Venta, Transporte, Cotizaciones, Ingresos, Reportes detallados (por pedido, cotización, ingresos, clientes, vendedores) y un sistema de Backups exclusivo para SUPERADMIN con historial completo de respaldos. Redujo el tiempo de gestión operativa en un 68% y centralizó todos los procesos en una sola plataforma.",
+    images: ["/logicore-dashboard.png", "/logicore-reportes.png", "/logicore-backups.png"],
+    tech: ["Laravel", "PHP", "MySQL", "JavaScript", "Bootstrap", "REST API"],
+    link: "https://ddsp.sanchezpharma.com/",
+  },
+  {
+    id: 3,
+    title: "Red de Integridad Lambayeque",
+    subtitle: "Portal Web Institucional, Observatorio Ciudadano e Intranet",
+    tag1: "Portal Web",
+    tag2: "Transparencia & Obras",
+    desc: "Plataforma oficial multiactor orientada a la transparencia en obras públicas, veeduría ciudadana e integridad institucional.",
+    longDesc: "Diseño y desarrollo de la plataforma web oficial para la Red de Integridad de Lambayeque (reddeintegridadlambayeque.org). Integra un portal informativo institucional con módulos de noticias, publicaciones y actividades; un Observatorio ciudadano para la fiscalización, monitoreo y veeduría de obras públicas con verificación de estándares de integridad; y una intranet segura para la gestión y articulación multiactor de los miembros de la red.",
+    images: [
+      "/red-integridad/RI_Inicio.png",
+      "/red-integridad/RI_Obs.png",
+      "/red-integridad/RI_Intranet.png",
+    ],
+    tech: ["Web Informativa", "Observatorio de Obras", "Intranet Multiactor", "Transparencia Pública", "Seguridad Web"],
+    link: "https://www.reddeintegridadlambayeque.org/",
+  },
+  {
+    id: 4,
+    title: "Sistema de Gestión para Bodegas & Minimarkets",
+    subtitle: "Punto de Venta (POS), Control de Inventario y Ventas",
+    tag1: "Punto de Venta",
+    tag2: "Gestión Comercial",
+    desc: "Sistema a medida para bodegas y minimarkets con punto de venta ágil, registro de ventas, control de inventario y arqueo de caja.",
+    longDesc: "Desarrollamos una plataforma integral de gestión comercial diseñada especialmente para bodegas, tiendas y minimarkets. Integra un Punto de Venta (POS) rápido y optimizado para mostrador, control de ventas en tiempo real, catálogo de productos con control de stock, historial detallado de transacciones, arqueo de caja y reportes de rendimiento operativo.",
+    images: [
+      "/bodega/B_Inicio.png",
+      "/bodega/B_PuntoVenta.png",
+      "/bodega/B_Ventas.png",
+    ],
+    tech: ["Laravel", "PHP", "MySQL", "JavaScript", "POS / Punto de Venta", "Control de Stock"],
+  },
+];
+
+// ── Project Modal Component ──────────────────────────────────────────────
+function ProjectModal({
+  project,
+  onClose,
+  isDark,
+}: {
+  project: Project;
+  onClose: () => void;
+  isDark: boolean;
+}) {
+  const [currentImg, setCurrentImg] = useState(0);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/75 backdrop-blur-md" onClick={onClose} />
+
+      {/* Modal Card */}
+      <div
+        className={`relative z-10 w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-3xl border shadow-[0_30px_80px_rgba(0,0,0,0.5)] animate-in slide-in transition-colors duration-300 ${
+          isDark
+            ? "bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border-slate-700/60 text-white"
+            : "bg-white border-slate-200 text-slate-900"
+        }`}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className={`absolute top-5 right-5 z-20 w-10 h-10 rounded-full border flex items-center justify-center transition-all shadow-lg ${
+            isDark
+              ? "bg-slate-800/90 border-slate-700 text-slate-400 hover:text-white hover:bg-slate-700"
+              : "bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-200"
+          }`}
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Header gradient band */}
+        <div className="h-1.5 w-full bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 rounded-t-3xl" />
+
+        <div className="p-7 md:p-10">
+          {/* Tags */}
+          <div className="flex gap-2 mb-4">
+            <span
+              className={`px-3 py-1 rounded-full border text-xs font-bold ${
+                isDark
+                  ? "bg-blue-500/15 border-blue-500/30 text-blue-400"
+                  : "bg-blue-50 border-blue-200 text-blue-700"
+              }`}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              {project.tag1}
+            </span>
+            <span
+              className={`px-3 py-1 rounded-full border text-xs font-bold ${
+                isDark
+                  ? "bg-indigo-500/15 border-indigo-500/30 text-indigo-400"
+                  : "bg-indigo-50 border-indigo-200 text-indigo-700"
+              }`}
             >
-              Learning
-            </a>{" "}
-            center.
+              {project.tag2}
+            </span>
+          </div>
+
+          <h2
+            className={`text-2xl md:text-4xl font-black mb-1 tracking-tight ${
+              isDark ? "text-white" : "text-slate-900"
+            }`}
+          >
+            {project.title}
+          </h2>
+          <p
+            className={`font-semibold text-sm md:text-base mb-6 ${
+              isDark ? "text-cyan-400" : "text-cyan-600"
+            }`}
+          >
+            {project.subtitle}
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+          {/* Image Carousel */}
+          <div
+            className={`relative rounded-2xl overflow-hidden border mb-4 aspect-video flex items-center justify-center ${
+              isDark ? "bg-slate-950 border-slate-800" : "bg-slate-100 border-slate-200"
+            }`}
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+            <img
+              src={project.images[currentImg]}
+              alt={`${project.title} - imagen ${currentImg + 1}`}
+              className="object-contain w-full h-full max-h-72 md:max-h-96 transition-all duration-300"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            {project.images.length > 1 && (
+              <div className="absolute inset-x-0 bottom-3 flex justify-center gap-2">
+                {project.images.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentImg(i)}
+                    className={`w-2.5 h-2.5 rounded-full border transition-all ${
+                      i === currentImg
+                        ? "bg-cyan-400 border-cyan-400 scale-125"
+                        : isDark
+                        ? "bg-slate-600 border-slate-500 hover:bg-slate-400"
+                        : "bg-slate-300 border-slate-400 hover:bg-slate-500"
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Prev / Next image buttons */}
+          {project.images.length > 1 && (
+            <div className="flex justify-center gap-3 mb-6">
+              <button
+                onClick={() =>
+                  setCurrentImg((p) => (p - 1 + project.images.length) % project.images.length)
+                }
+                className={`px-4 py-1.5 rounded-full border text-xs font-bold transition ${
+                  isDark
+                    ? "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
+                    : "bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200"
+                }`}
+              >
+                ← Anterior
+              </button>
+              <span className="text-slate-500 text-xs self-center">
+                {currentImg + 1} / {project.images.length}
+              </span>
+              <button
+                onClick={() => setCurrentImg((p) => (p + 1) % project.images.length)}
+                className={`px-4 py-1.5 rounded-full border text-xs font-bold transition ${
+                  isDark
+                    ? "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
+                    : "bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200"
+                }`}
+              >
+                Siguiente →
+              </button>
+            </div>
+          )}
+
+          {/* Description */}
+          <p
+            className={`leading-relaxed mb-8 text-sm md:text-base ${
+              isDark ? "text-slate-300" : "text-slate-600"
+            }`}
           >
-            Documentation
-          </a>
+            {project.longDesc}
+          </p>
+
+          {/* Tech Stack Pills */}
+          <div className="mb-8">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">
+              Tecnologías utilizadas
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {project.tech.map((t) => (
+                <span
+                  key={t}
+                  className={`px-3 py-1 rounded-lg border text-xs font-semibold ${
+                    isDark
+                      ? "bg-slate-800 border-slate-700 text-slate-300"
+                      : "bg-slate-100 border-slate-200 text-slate-700"
+                  }`}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="flex flex-wrap gap-3">
+            {project.link && (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-sm transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:scale-105 active:scale-95"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Visitar Sitio Web
+              </a>
+            )}
+            <a
+              href={`https://wa.me/51964670996?text=Hola,%20me%20interesa%20un%20proyecto%20similar%20a:%20${encodeURIComponent(
+                project.title
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-[#25D366] hover:bg-[#20b858] text-white font-bold text-sm transition-all shadow-[0_0_20px_rgba(37,211,102,0.3)] hover:scale-105"
+            >
+              <MessageCircle className="w-4 h-4 fill-current" />
+              Quiero algo similar
+            </a>
+            <button
+              onClick={onClose}
+              className={`inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm border transition-all ${
+                isDark
+                  ? "bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200"
+              }`}
+            >
+              <X className="w-4 h-4" /> Cerrar
+            </button>
+          </div>
         </div>
-      </main>
+      </div>
     </div>
+  );
+}
+
+// ── Main Page ───────────────────────────────────────────────────────────
+export default function Home() {
+  const whatsappNumber = "51964670996";
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Hola,%20me%20interesan%20los%20servicios%20de%20CAEC%20Software.`;
+
+  const [openProject, setOpenProject] = useState<Project | null>(null);
+  const [isDark, setIsDark] = useState(true);
+
+  // Restore saved theme on client load
+  useEffect(() => {
+    const saved = localStorage.getItem("caec_theme");
+    if (saved === "light") {
+      setIsDark(false);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    setIsDark((prev) => {
+      const next = !prev;
+      localStorage.setItem("caec_theme", next ? "dark" : "light");
+      return next;
+    });
+  };
+
+  return (
+    <main
+      className={`min-h-screen transition-colors duration-500 ${
+        isDark ? "bg-[#070d18] text-white selection:bg-blue-500/30" : "bg-[#f8fafc] text-slate-900 selection:bg-blue-500/20"
+      }`}
+    >
+      {/* ── NAVBAR ──────────────────────────────────────────────────────── */}
+      <nav
+        className={`sticky top-0 z-50 w-full backdrop-blur-xl border-b transition-colors duration-500 ${
+          isDark
+            ? "bg-[#091322]/92 border-white/10 shadow-2xl"
+            : "bg-white/90 border-slate-200 shadow-md"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo + brand text */}
+            <a href="#inicio" className="flex items-center gap-3 group flex-shrink-0">
+              <div
+                className={`h-12 w-12 rounded-xl p-1 border shadow-lg overflow-hidden transition-all ${
+                  isDark
+                    ? "bg-slate-900 border-white/15 group-hover:border-cyan-400/50"
+                    : "bg-slate-50 border-slate-200 group-hover:border-blue-400/60"
+                }`}
+              >
+                <img
+                  src="/logo-app.png"
+                  alt="CAEC App"
+                  className="h-full w-full object-contain group-hover:scale-105 transition-transform"
+                />
+              </div>
+              <div className="hidden sm:flex flex-col leading-tight">
+                <span
+                  className={`font-extrabold text-sm md:text-base tracking-wide transition-colors ${
+                    isDark ? "text-white" : "text-slate-900"
+                  }`}
+                >
+                  CAEC
+                </span>
+                <span className="text-cyan-500 text-[10px] md:text-xs font-semibold">
+                  Software &amp; Digital Solutions
+                </span>
+              </div>
+            </a>
+
+            {/* Nav links */}
+            <div className="hidden md:flex items-center space-x-7 text-sm font-semibold">
+              <a
+                href="#inicio"
+                className={`transition-colors ${
+                  isDark ? "text-slate-300 hover:text-cyan-300" : "text-slate-600 hover:text-blue-600"
+                }`}
+              >
+                Inicio
+              </a>
+              <a
+                href="#nosotros"
+                className={`transition-colors ${
+                  isDark ? "text-slate-300 hover:text-cyan-300" : "text-slate-600 hover:text-blue-600"
+                }`}
+              >
+                Quiénes Somos
+              </a>
+              <a
+                href="#services"
+                className={`transition-colors ${
+                  isDark ? "text-slate-300 hover:text-cyan-300" : "text-slate-600 hover:text-blue-600"
+                }`}
+              >
+                Servicios
+              </a>
+              <a
+                href="#projects"
+                className={`transition-colors ${
+                  isDark ? "text-slate-300 hover:text-cyan-300" : "text-slate-600 hover:text-blue-600"
+                }`}
+              >
+                Proyectos
+              </a>
+            </div>
+
+            {/* Right actions: Theme toggle (Noche/Luz) + WhatsApp */}
+            <div className="flex items-center gap-3">
+              {/* THEME SWITCHER: NOCHE / LUZ */}
+              <button
+                onClick={toggleTheme}
+                aria-label="Cambiar tema de color"
+                title={isDark ? "Cambiar a Modo Luz (Día)" : "Cambiar a Modo Noche (Oscuro)"}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-full border text-xs font-bold transition-all duration-300 shadow-sm hover:scale-105 active:scale-95 ${
+                  isDark
+                    ? "bg-slate-800/90 border-slate-700 text-amber-300 hover:bg-slate-700 hover:border-amber-400/50"
+                    : "bg-slate-100 border-slate-200 text-indigo-900 hover:bg-slate-200 hover:border-indigo-400"
+                }`}
+              >
+                {isDark ? (
+                  <>
+                    <Sun className="w-4 h-4 text-amber-400 animate-spin-slow" />
+                    <span className="hidden sm:inline text-slate-200">LUZ</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon className="w-4 h-4 text-indigo-600" />
+                    <span className="hidden sm:inline text-slate-700">NOCHE</span>
+                  </>
+                )}
+              </button>
+
+              {/* WhatsApp CTA */}
+              <a
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-[#25D366] hover:bg-[#20b858] text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all shadow-[0_0_18px_rgba(37,211,102,0.4)] hover:shadow-[0_0_28px_rgba(37,211,102,0.65)] hover:scale-105 active:scale-95"
+              >
+                <MessageCircle className="w-4 h-4 fill-current" />
+                WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* ── HERO 3D ──────────────────────────────────────────────────────── */}
+      <div id="inicio">
+        <HeroStudio3D whatsappLink={whatsappLink} isDark={isDark} />
+      </div>
+
+      {/* ── QUIÉNES SOMOS (CON FONDO DE AURORA BOREAL) ────────────────────── */}
+      <section
+        id="nosotros"
+        className={`py-28 relative overflow-hidden transition-colors duration-500 ${
+          isDark ? "bg-[#060e1a]" : "bg-gradient-to-b from-slate-50 via-teal-50/20 to-slate-100"
+        }`}
+      >
+        {/* ── AURORA BOREAL BACKGROUND EFFECT ─────────────────────────────────── */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Aurora Emerald Glow Ribbon */}
+          <div
+            className={`absolute -top-32 left-1/4 w-[650px] h-[500px] rounded-full filter blur-[100px] opacity-25 aurora-layer-1 ${
+              isDark
+                ? "bg-gradient-to-r from-teal-800 via-emerald-800 to-cyan-800"
+                : "bg-gradient-to-r from-teal-200 via-emerald-100 to-cyan-200"
+            }`}
+          />
+          {/* Aurora Cyan / Sapphire Ribbon */}
+          <div
+            className={`absolute top-1/4 -right-24 w-[600px] h-[550px] rounded-full filter blur-[120px] opacity-30 aurora-layer-2 ${
+              isDark
+                ? "bg-gradient-to-l from-sky-800 via-blue-800 to-indigo-800"
+                : "bg-gradient-to-l from-sky-200 via-blue-100 to-indigo-200"
+            }`}
+          />
+          {/* Aurora Warm / Gold Ethereal Shimmer */}
+          <div
+            className={`absolute -bottom-24 left-1/6 w-[700px] h-[450px] rounded-full filter blur-[100px] opacity-20 aurora-layer-3 ${
+              isDark
+                ? "bg-gradient-to-t from-amber-700/50 via-orange-800/40 to-rose-800/30"
+                : "bg-gradient-to-t from-amber-200 via-orange-100 to-rose-200"
+            }`}
+          />
+
+          {/* Flowing animated gradient veil */}
+          <div
+            className={`absolute inset-0 opacity-15 aurora-gradient-flow ${
+              isDark
+                ? "bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-800/20 via-cyan-900/10 to-transparent"
+                : "bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-200/30 via-cyan-100/20 to-transparent"
+            }`}
+          />
+
+          {/* Subtle noise/stars grid overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:32px_32px] opacity-15" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Top section heading */}
+          <div className="text-center mb-16 md:mb-20">
+            <div
+              className={`inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border text-xs font-semibold backdrop-blur-md ${
+                isDark
+                  ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                  : "border-emerald-300 bg-emerald-50 text-emerald-700 shadow-sm"
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+              Conoce al Equipo Detrás de Cada Solución
+            </div>
+            <h2
+              className={`text-4xl md:text-5xl font-black mb-5 tracking-tight ${
+                isDark ? "text-white" : "text-slate-900"
+              }`}
+            >
+              Quiénes Somos
+            </h2>
+            <p
+              className={`text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed ${
+                isDark ? "text-slate-300" : "text-slate-600"
+              }`}
+            >
+              Tecnología de alta gama concebida con rigor de ingeniería, diseño vanguardista y pasión por la transformación empresarial.
+            </p>
+          </div>
+
+          {/* Executive Asymmetrical Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            {/* Left Column: Photo Card with Aurora Border */}
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="relative group max-w-sm w-full">
+                {/* Aurora Outer Glow Rim */}
+                <div className="absolute -inset-1 rounded-[2.5rem] bg-gradient-to-tr from-emerald-400 via-cyan-400 to-indigo-500 opacity-70 group-hover:opacity-100 blur-lg transition duration-500" />
+
+                {/* Inner Card Container */}
+                <div
+                  className={`relative rounded-[2.3rem] p-3 border backdrop-blur-xl shadow-2xl transition-all duration-300 ${
+                    isDark
+                      ? "bg-slate-900/90 border-white/15"
+                      : "bg-white/95 border-slate-200"
+                  }`}
+                >
+                  {/* Photo frame */}
+                  <div className="relative aspect-square rounded-[1.8rem] overflow-hidden bg-slate-950 shadow-inner">
+                    <img
+                      src="/mi-perfil.png"
+                      alt="Líder de Arquitectura & Desarrollo de CAEC"
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                    />
+
+                    {/* Gradient bottom overlay on photo */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+
+                    {/* Status pill on photo */}
+                    <div className="absolute top-4 left-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-emerald-400/40 text-[11px] font-bold text-emerald-300 shadow-lg">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      Disponible para Proyectos
+                    </div>
+
+                    {/* Founder title card overlay */}
+                    <div className="absolute bottom-4 inset-x-4 text-center">
+                      <p className="text-white font-extrabold text-base tracking-wide drop-shadow-md">
+                        Líder de Arquitectura &amp; Desarrollo
+                      </p>
+                      <p className="text-cyan-300 font-medium text-xs">CAEC Software &amp; Digital Solutions</p>
+                    </div>
+                  </div>
+
+                  {/* Badges bar */}
+                  <div className="mt-4 px-2 pb-2 flex flex-wrap justify-center gap-2">
+                    {["Next.js", "Laravel", "React Native", "Three.js", "Cloud"].map((t) => (
+                      <span
+                        key={t}
+                        className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border ${
+                          isDark
+                            ? "bg-slate-800/80 border-slate-700 text-slate-300"
+                            : "bg-slate-100 border-slate-200 text-slate-700"
+                        }`}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Bio Narrative & High-Impact Pillars */}
+            <div className="lg:col-span-7 flex flex-col justify-center">
+              <div
+                className={`p-8 md:p-10 rounded-3xl border backdrop-blur-xl shadow-2xl transition-all duration-300 ${
+                  isDark
+                    ? "bg-slate-900/60 border-slate-800"
+                    : "bg-white/80 border-slate-200"
+                }`}
+              >
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-bold mb-4 uppercase tracking-wider">
+                  ✦ Nuestra Filosofía de Trabajo
+                </div>
+
+                <h3
+                  className={`text-2xl md:text-3xl font-black mb-4 tracking-tight leading-snug ${
+                    isDark ? "text-white" : "text-slate-900"
+                  }`}
+                >
+                  Impulsando el crecimiento digital con software robusto y diseño de primer nivel
+                </h3>
+
+                <p
+                  className={`text-sm md:text-base leading-relaxed mb-6 font-light ${
+                    isDark ? "text-slate-300" : "text-slate-600"
+                  }`}
+                >
+                  En <strong className={isDark ? "text-cyan-300" : "text-blue-600"}>CAEC Software</strong> unimos ingeniería de precisión y creatividad interactiva. No hacemos sitios web genéricos: desarrollamos plataformas comerciales a medida, aplicaciones móviles escalables e intranets de gestión empresarial diseñadas para generar ingresos continuos y optimizar la operación de tu negocio.
+                </p>
+
+                {/* 4 Pillars Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                  {[
+                    {
+                      icon: <ShieldCheck className="w-5 h-5 text-emerald-400" />,
+                      title: "Código Limpio & Seguro",
+                      desc: "Arquitecturas probadas, sin dependencias innecesarias y con protección de datos.",
+                    },
+                    {
+                      icon: <Cpu className="w-5 h-5 text-cyan-400" />,
+                      title: "Ecosistema Omnicanal",
+                      desc: "Integración perfecta de Sitio Web, App Móvil e Intranet Comercial en tiempo real.",
+                    },
+                    {
+                      icon: <Award className="w-5 h-5 text-blue-400" />,
+                      title: "Garantía & Acompañamiento",
+                      desc: "Soporte técnico directo, asesoría continua y capacitación post-entrega.",
+                    },
+                    {
+                      icon: <Zap className="w-5 h-5 text-amber-400" />,
+                      title: "Máxima Velocidad & SEO",
+                      desc: "Tiempos de carga ultra rápidos optimizados para liderar en Google y redes.",
+                    },
+                  ].map((p, idx) => (
+                    <div
+                      key={idx}
+                      className={`p-4 rounded-2xl border transition-all duration-300 ${
+                        isDark
+                          ? "bg-slate-950/40 border-slate-800/80 hover:border-cyan-500/40"
+                          : "bg-slate-50 border-slate-200/80 hover:border-blue-400"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 mb-1.5">
+                        <div
+                          className={`p-2 rounded-xl border ${
+                            isDark ? "bg-slate-900 border-white/10" : "bg-white border-slate-200 shadow-sm"
+                          }`}
+                        >
+                          {p.icon}
+                        </div>
+                        <h4
+                          className={`text-sm font-bold ${
+                            isDark ? "text-slate-100" : "text-slate-900"
+                          }`}
+                        >
+                          {p.title}
+                        </h4>
+                      </div>
+                      <p
+                        className={`text-xs leading-relaxed ${
+                          isDark ? "text-slate-400" : "text-slate-600"
+                        }`}
+                      >
+                        {p.desc}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Direct CTA */}
+                <div className="flex flex-wrap gap-4 items-center">
+                  <a
+                    href={whatsappLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-[#25D366] hover:bg-[#20b858] text-white font-bold text-sm transition-all shadow-[0_0_20px_rgba(37,211,102,0.35)] hover:scale-105 active:scale-95"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-current" />
+                    Hablemos de tu Proyecto
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                  <a
+                    href="#projects"
+                    className={`inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm border transition-all ${
+                      isDark
+                        ? "bg-slate-800/80 hover:bg-slate-700 text-slate-300 border-slate-700"
+                        : "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200"
+                    }`}
+                  >
+                    Ver Proyectos Realizados
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SERVICES ─────────────────────────────────────────────────────── */}
+      <section
+        id="services"
+        className={`py-28 relative transition-colors duration-500 ${
+          isDark ? "bg-[#091120]" : "bg-[#f1f5f9]"
+        }`}
+      >
+        <div
+          className={`absolute top-0 inset-x-0 h-px ${
+            isDark
+              ? "bg-gradient-to-r from-transparent via-blue-500/25 to-transparent"
+              : "bg-gradient-to-r from-transparent via-slate-300 to-transparent"
+          }`}
+        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <div
+              className={`inline-flex items-center gap-2 mb-4 px-3.5 py-1.5 rounded-full border text-xs font-semibold ${
+                isDark
+                  ? "border-blue-500/30 bg-blue-500/10 text-blue-300"
+                  : "border-blue-300 bg-blue-50 text-blue-700"
+              }`}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+              Excelencia en cada entrega
+            </div>
+            <h2
+              className={`text-4xl md:text-5xl font-black mb-5 tracking-tight ${
+                isDark ? "text-white" : "text-slate-900"
+              }`}
+            >
+              Servicios Especializados
+            </h2>
+            <p
+              className={`text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed ${
+                isDark ? "text-slate-400" : "text-slate-600"
+              }`}
+            >
+              Construimos la infraestructura tecnológica que tu empresa necesita para destacar y convertir visitantes en clientes de alto valor.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <Globe className="text-blue-500" size={28} />,
+                title: "Landing Pages Premium",
+                desc: "Páginas de ultra alta conversión con interactividad 3D, velocidad instantánea y optimización SEO.",
+              },
+              {
+                icon: <Smartphone className="text-cyan-500" size={28} />,
+                title: "Apps Móviles & Web",
+                desc: "Aplicaciones fluidas para iOS y Android con UX impecable y arquitectura escalable.",
+              },
+              {
+                icon: <Code className="text-indigo-500" size={28} />,
+                title: "Software a Medida",
+                desc: "Automatización de procesos empresariales y plataformas corporativas diseñadas para tu negocio.",
+              },
+              {
+                icon: <Cpu className="text-blue-500" size={28} />,
+                title: "Integración de Sistemas",
+                desc: "Conexión de pasarelas de pago, CRMs, APIs para un flujo de trabajo 100% automatizado.",
+              },
+              {
+                icon: <Layers className="text-cyan-500" size={28} />,
+                title: "Diseño UI / UX Exclusivo",
+                desc: "Interfaces limpias, profesionales y de alto impacto diseñadas para cautivar a primera vista.",
+              },
+              {
+                icon: <Zap className="text-indigo-500" size={28} />,
+                title: "Transformación Digital",
+                desc: "Estrategias para digitalizar tu negocio, multiplicar ventas y superar a la competencia.",
+              },
+            ].map((s, i) => (
+              <div
+                key={i}
+                className={`p-8 rounded-3xl border transition-all duration-300 group hover:-translate-y-1 shadow-xl backdrop-blur-sm ${
+                  isDark
+                    ? "bg-slate-900/40 border-slate-800/80 hover:bg-slate-800/50 hover:border-blue-500/40"
+                    : "bg-white border-slate-200/90 hover:bg-slate-50 hover:border-blue-400 text-slate-900"
+                }`}
+              >
+                <div
+                  className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 border transition-transform group-hover:scale-110 ${
+                    isDark
+                      ? "bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-white/10"
+                      : "bg-blue-50 border-blue-200"
+                  }`}
+                >
+                  {s.icon}
+                </div>
+                <h3
+                  className={`text-xl font-bold mb-3 ${
+                    isDark ? "text-slate-100" : "text-slate-900"
+                  }`}
+                >
+                  {s.title}
+                </h3>
+                <p
+                  className={`leading-relaxed font-light text-sm ${
+                    isDark ? "text-slate-400" : "text-slate-600"
+                  }`}
+                >
+                  {s.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── PROJECTS ─────────────────────────────────────────────────────── */}
+      <section
+        id="projects"
+        className={`py-28 relative transition-colors duration-500 ${
+          isDark ? "bg-[#070d18]" : "bg-[#f8fafc]"
+        }`}
+      >
+        <div className="absolute inset-0 bg-blue-900/5 blur-[150px] -z-10 pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-16 text-center">
+            <h2
+              className={`text-4xl md:text-5xl font-black mb-4 tracking-tight ${
+                isDark ? "text-white" : "text-slate-900"
+              }`}
+            >
+              Casos de Éxito
+            </h2>
+            <p
+              className={`text-base md:text-lg font-light ${
+                isDark ? "text-slate-400" : "text-slate-600"
+              }`}
+            >
+              Proyectos reales que generan resultados medibles. Haz clic para ver detalles.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+            {PROJECTS.map((project) => (
+              <button
+                key={project.id}
+                onClick={() => setOpenProject(project)}
+                className={`group text-left relative rounded-3xl border overflow-hidden transition-all duration-500 shadow-2xl hover:-translate-y-1 ${
+                  isDark
+                    ? "bg-slate-900/60 border-slate-800 hover:border-blue-500/60 hover:shadow-[0_20px_60px_rgba(59,130,246,0.2)]"
+                    : "bg-white border-slate-200 hover:border-blue-400 hover:shadow-[0_20px_60px_rgba(59,130,246,0.12)] text-slate-900"
+                }`}
+              >
+                {/* Project thumb */}
+                <div
+                  className={`aspect-video relative overflow-hidden ${
+                    isDark ? "bg-slate-950" : "bg-slate-100"
+                  }`}
+                >
+                  <img
+                    src={project.images[0]}
+                    alt={project.title}
+                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                  />
+                  <div
+                    className={`absolute inset-0 ${
+                      isDark
+                        ? "bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"
+                        : "bg-gradient-to-t from-black/50 via-transparent to-transparent"
+                    }`}
+                  />
+
+                  {/* View button on hover */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white font-bold text-sm shadow-xl">
+                      <ExternalLink className="w-4 h-4" />
+                      Ver Detalles
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card body */}
+                <div className="p-6">
+                  <div className="flex flex-wrap items-center gap-2 mb-3">
+                    <span
+                      className={`px-3 py-1 rounded-full border text-xs font-bold ${
+                        isDark
+                          ? "bg-blue-500/10 border-blue-500/30 text-blue-400"
+                          : "bg-blue-50 border-blue-200 text-blue-700"
+                      }`}
+                    >
+                      {project.tag1}
+                    </span>
+                    <span
+                      className={`px-3 py-1 rounded-full border text-xs font-bold ${
+                        isDark
+                          ? "bg-indigo-500/10 border-indigo-500/30 text-indigo-400"
+                          : "bg-indigo-50 border-indigo-200 text-indigo-700"
+                      }`}
+                    >
+                      {project.tag2}
+                    </span>
+                    {project.link && (
+                      <span className="ml-auto inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 border border-emerald-500/40 text-emerald-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        En vivo
+                      </span>
+                    )}
+                  </div>
+                  <h3
+                    className={`text-lg font-bold mb-2 transition-colors ${
+                      isDark
+                        ? "text-white group-hover:text-cyan-300"
+                        : "text-slate-900 group-hover:text-blue-600"
+                    }`}
+                  >
+                    {project.title}
+                  </h3>
+                  <p
+                    className={`text-sm font-light leading-relaxed line-clamp-3 ${
+                      isDark ? "text-slate-400" : "text-slate-600"
+                    }`}
+                  >
+                    {project.desc}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA WHATSAPP ─────────────────────────────────────────────────── */}
+      <section
+        className={`py-28 relative overflow-hidden transition-colors duration-500 ${
+          isDark ? "bg-[#070d18]" : "bg-[#f8fafc]"
+        }`}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div
+            className={`relative rounded-3xl p-10 md:p-16 text-center overflow-hidden transition-all duration-300 shadow-2xl ${
+              isDark
+                ? "bg-[#0e182a] border border-slate-700/60"
+                : "bg-white border border-slate-200"
+            }`}
+          >
+            {/* Subtle Texture / Gradient (Professional, not AI) */}
+            <div
+              className={`absolute top-0 right-0 w-full h-full opacity-30 pointer-events-none ${
+                isDark
+                  ? "bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-700/40 via-transparent to-transparent"
+                  : "bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-200/50 via-transparent to-transparent"
+              }`}
+            />
+            
+            <div className="relative z-10">
+              <h2
+                className={`text-3xl md:text-5xl font-black mb-5 tracking-tight ${
+                  isDark ? "text-white" : "text-slate-900"
+                }`}
+              >
+                ¿Listo para iniciar tu proyecto?
+              </h2>
+              
+              <p
+                className={`text-lg md:text-xl mb-10 max-w-2xl mx-auto font-medium leading-relaxed ${
+                  isDark ? "text-slate-400" : "text-slate-500"
+                }`}
+              >
+                Escríbenos por WhatsApp y nuestro equipo preparará una propuesta técnica y comercial a la medida de tu empresa.
+              </p>
+
+              <div className="flex justify-center">
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#20b858] text-white px-8 py-4 rounded-full text-base font-bold transition-transform transform hover:scale-105 active:scale-95 shadow-[0_4px_14px_rgba(37,211,102,0.4)]"
+                >
+                  <MessageCircle className="w-5 h-5 fill-current" />
+                  Hablar por WhatsApp Ahora
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOOTER ───────────────────────────────────────────────────────── */}
+      <footer
+        className={`border-t transition-colors duration-500 ${
+          isDark ? "border-slate-800/60 bg-[#070d18] text-white" : "border-slate-200 bg-slate-900 text-white"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {/* Brand */}
+            <div className="flex flex-col gap-4">
+              <img
+                src="/logo-general.png"
+                alt="CAEC Software & Digital Solutions"
+                className="h-20 md:h-24 w-auto object-contain object-left"
+              />
+              <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
+                Transformamos ideas en soluciones digitales de alto impacto. Desarrollo web, apps y software a medida.
+              </p>
+            </div>
+
+            {/* Nav links */}
+            <div className="flex flex-col gap-3">
+              <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">
+                Navegación
+              </p>
+              <a href="#inicio" className="text-slate-400 hover:text-cyan-300 text-sm transition-colors">
+                Inicio
+              </a>
+              <a href="#nosotros" className="text-slate-400 hover:text-cyan-300 text-sm transition-colors">
+                Quiénes Somos
+              </a>
+              <a href="#services" className="text-slate-400 hover:text-cyan-300 text-sm transition-colors">
+                Servicios
+              </a>
+              <a href="#projects" className="text-slate-400 hover:text-cyan-300 text-sm transition-colors">
+                Proyectos
+              </a>
+              <a
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-400 hover:text-cyan-300 text-sm transition-colors"
+              >
+                Contáctanos
+              </a>
+            </div>
+
+            {/* Social */}
+            <div className="flex flex-col gap-4">
+              <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">
+                Síguenos
+              </p>
+              <div className="flex items-center gap-3">
+                {/* Facebook */}
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="w-11 h-11 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#1877F2] hover:border-[#1877F2] transition-all hover:scale-110 shadow-md"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                  </svg>
+                </a>
+
+                {/* Instagram */}
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="w-11 h-11 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#E1306C] hover:border-[#E1306C] transition-all hover:scale-110 shadow-md"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                  </svg>
+                </a>
+
+                {/* WhatsApp */}
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp"
+                  className="w-11 h-11 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#25D366] hover:border-[#25D366] transition-all hover:scale-110 shadow-md"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                  </svg>
+                </a>
+              </div>
+              <p className="text-slate-500 text-xs">¿Tienes un proyecto? ¡Escríbenos hoy!</p>
+            </div>
+          </div>
+
+          {/* Bottom bar */}
+          <div className="border-t border-slate-800/50 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <p className="text-slate-500 text-xs text-center sm:text-left">
+              © {new Date().getFullYear()} CAEC Software &amp; Digital Solutions. Todos los derechos reservados.
+            </p>
+            <span className="text-slate-500 text-xs">Hecho por CAEC</span>
+          </div>
+        </div>
+      </footer>
+
+      {/* ── PROJECT MODAL ─────────────────────────────────────────────────── */}
+      {openProject && (
+        <ProjectModal
+          project={openProject}
+          onClose={() => setOpenProject(null)}
+          isDark={isDark}
+        />
+      )}
+    </main>
   );
 }
