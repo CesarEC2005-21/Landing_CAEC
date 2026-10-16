@@ -1175,7 +1175,7 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 {/* Facebook */}
                 <a
-                  href="https://facebook.com"
+                  href="https://www.facebook.com/profile.php?id=61594429635549"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
