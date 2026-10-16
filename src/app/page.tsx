@@ -1015,7 +1015,11 @@ export default function Home() {
                 <img
                   src="/logo-general.png"
                   alt="CAEC Software & Digital Solutions"
-                  className="h-20 md:h-24 w-auto object-contain object-left feather-edges [mask-image:radial-gradient(ellipse_at_center,_black_60%,_transparent_98%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,_black_60%,_transparent_98%)]"
+                  className="h-20 md:h-24 w-auto object-contain mix-blend-screen select-none"
+                  style={{
+                    WebkitMaskImage: "radial-gradient(ellipse 75% 70% at 50% 50%, black 25%, transparent 80%)",
+                    maskImage: "radial-gradient(ellipse 75% 70% at 50% 50%, black 25%, transparent 80%)",
+                  }}
                 />
               </div>
               <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
