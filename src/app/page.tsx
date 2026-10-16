@@ -321,6 +321,7 @@ export default function Home() {
 
   const [openProject, setOpenProject] = useState<Project | null>(null);
   const [isDark, setIsDark] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Restore saved theme on client load
   useEffect(() => {
@@ -330,6 +331,16 @@ export default function Home() {
     }
   }, []);
 
+  // Close mobile menu on route change / outside click
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileMenuOpen]);
+
   const toggleTheme = () => {
     setIsDark((prev) => {
       const next = !prev;
@@ -337,6 +348,8 @@ export default function Home() {
       return next;
     });
   };
+
+  const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
     <main
@@ -353,11 +366,11 @@ export default function Home() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo + brand text */}
-            <a href="#inicio" className="flex items-center gap-3 group flex-shrink-0">
+            <a href="#inicio" className="flex items-center gap-2.5 group flex-shrink-0" onClick={closeMobileMenu}>
               <div
-                className={`h-12 w-12 rounded-xl p-1 border shadow-lg overflow-hidden transition-all ${
+                className={`h-10 w-10 md:h-12 md:w-12 rounded-xl p-1 border shadow-lg overflow-hidden transition-all ${
                   isDark
                     ? "bg-slate-900 border-white/15 group-hover:border-cyan-400/50"
                     : "bg-slate-50 border-slate-200 group-hover:border-blue-400/60"
@@ -369,7 +382,7 @@ export default function Home() {
                   className="h-full w-full object-contain group-hover:scale-105 transition-transform"
                 />
               </div>
-              <div className="hidden sm:flex flex-col leading-tight">
+              <div className="flex flex-col leading-tight">
                 <span
                   className={`font-extrabold text-sm md:text-base tracking-wide transition-colors ${
                     isDark ? "text-white" : "text-slate-900"
@@ -377,85 +390,109 @@ export default function Home() {
                 >
                   CAEC
                 </span>
-                <span className="text-cyan-500 text-[10px] md:text-xs font-semibold">
+                <span className="text-cyan-500 text-[9px] md:text-[10px] font-semibold">
                   Software &amp; Digital Solutions
                 </span>
               </div>
             </a>
 
-            {/* Nav links */}
+            {/* Nav links — desktop */}
             <div className="hidden md:flex items-center space-x-7 text-sm font-semibold">
-              <a
-                href="#inicio"
-                className={`transition-colors ${
-                  isDark ? "text-slate-300 hover:text-cyan-300" : "text-slate-600 hover:text-blue-600"
-                }`}
-              >
-                Inicio
-              </a>
-              <a
-                href="#nosotros"
-                className={`transition-colors ${
-                  isDark ? "text-slate-300 hover:text-cyan-300" : "text-slate-600 hover:text-blue-600"
-                }`}
-              >
-                Quiénes Somos
-              </a>
-              <a
-                href="#services"
-                className={`transition-colors ${
-                  isDark ? "text-slate-300 hover:text-cyan-300" : "text-slate-600 hover:text-blue-600"
-                }`}
-              >
-                Servicios
-              </a>
-              <a
-                href="#projects"
-                className={`transition-colors ${
-                  isDark ? "text-slate-300 hover:text-cyan-300" : "text-slate-600 hover:text-blue-600"
-                }`}
-              >
-                Proyectos
-              </a>
+              <a href="#inicio" className={`transition-colors ${isDark ? "text-slate-300 hover:text-cyan-300" : "text-slate-600 hover:text-blue-600"}`}>Inicio</a>
+              <a href="#nosotros" className={`transition-colors ${isDark ? "text-slate-300 hover:text-cyan-300" : "text-slate-600 hover:text-blue-600"}`}>Quiénes Somos</a>
+              <a href="#services" className={`transition-colors ${isDark ? "text-slate-300 hover:text-cyan-300" : "text-slate-600 hover:text-blue-600"}`}>Servicios</a>
+              <a href="#projects" className={`transition-colors ${isDark ? "text-slate-300 hover:text-cyan-300" : "text-slate-600 hover:text-blue-600"}`}>Proyectos</a>
             </div>
 
-            {/* Right actions: Theme toggle (Noche/Luz) + WhatsApp */}
-            <div className="flex items-center gap-3">
-              {/* THEME SWITCHER: NOCHE / LUZ */}
+            {/* Right actions */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              {/* THEME SWITCHER */}
               <button
                 onClick={toggleTheme}
-                aria-label="Cambiar tema de color"
-                title={isDark ? "Cambiar a Modo Luz (Día)" : "Cambiar a Modo Noche (Oscuro)"}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-full border text-xs font-bold transition-all duration-300 shadow-sm hover:scale-105 active:scale-95 ${
+                aria-label={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+                title={isDark ? "Modo Claro" : "Modo Oscuro"}
+                className={`w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full border transition-all duration-300 shadow-sm hover:scale-105 active:scale-95 ${
                   isDark
-                    ? "bg-slate-800/90 border-slate-700 text-amber-300 hover:bg-slate-700 hover:border-amber-400/50"
-                    : "bg-slate-100 border-slate-200 text-indigo-900 hover:bg-slate-200 hover:border-indigo-400"
+                    ? "bg-slate-800/90 border-slate-700 text-amber-400 hover:bg-slate-700 hover:border-amber-400/40"
+                    : "bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200 hover:border-slate-300"
                 }`}
               >
                 {isDark ? (
-                  <>
-                    <Sun className="w-4 h-4 text-amber-400 animate-spin-slow" />
-                    <span className="hidden sm:inline text-slate-200">LUZ</span>
-                  </>
+                  <Sun className="w-4 h-4 text-amber-400" />
                 ) : (
-                  <>
-                    <Moon className="w-4 h-4 text-indigo-600" />
-                    <span className="hidden sm:inline text-slate-700">NOCHE</span>
-                  </>
+                  <Moon className="w-4 h-4 text-slate-700" />
                 )}
               </button>
 
-              {/* WhatsApp CTA */}
+              {/* WhatsApp CTA — hidden on mobile, shown on sm+ */}
               <a
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-[#25D366] hover:bg-[#20b858] text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all shadow-[0_0_18px_rgba(37,211,102,0.4)] hover:shadow-[0_0_28px_rgba(37,211,102,0.65)] hover:scale-105 active:scale-95"
+                className="hidden sm:flex items-center gap-2 bg-[#25D366] hover:bg-[#20b858] text-white px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all shadow-[0_0_18px_rgba(37,211,102,0.4)] hover:scale-105 active:scale-95"
               >
                 <MessageCircle className="w-4 h-4 fill-current" />
                 WhatsApp
               </a>
+
+              {/* Hamburger — mobile only */}
+              <button
+                onClick={() => setMobileMenuOpen((o) => !o)}
+                aria-label="Menú"
+                className={`md:hidden flex flex-col justify-center items-center w-9 h-9 rounded-lg border transition-all ${
+                  isDark ? "bg-slate-800 border-slate-700" : "bg-slate-100 border-slate-200"
+                }`}
+              >
+                <span className={`block w-5 h-0.5 transition-all duration-300 ${
+                  isDark ? "bg-slate-300" : "bg-slate-700"
+                } ${mobileMenuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
+                <span className={`block w-5 h-0.5 my-1 transition-all duration-300 ${
+                  isDark ? "bg-slate-300" : "bg-slate-700"
+                } ${mobileMenuOpen ? "opacity-0" : ""}`} />
+                <span className={`block w-5 h-0.5 transition-all duration-300 ${
+                  isDark ? "bg-slate-300" : "bg-slate-700"
+                } ${mobileMenuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
+              </button>
             </div>
+          </div>
+        </div>
+
+        {/* Mobile menu drawer */}
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ${
+          mobileMenuOpen ? "max-h-96" : "max-h-0"
+        } ${
+          isDark ? "bg-[#091322]/98 border-white/10" : "bg-white/98 border-slate-200"
+        } border-t`}>
+          <div className="px-4 py-4 flex flex-col gap-1">
+            {[
+              { href: "#inicio", label: "Inicio" },
+              { href: "#nosotros", label: "Quiénes Somos" },
+              { href: "#services", label: "Servicios" },
+              { href: "#projects", label: "Proyectos" },
+            ].map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={closeMobileMenu}
+                className={`px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                  isDark
+                    ? "text-slate-300 hover:text-white hover:bg-slate-800"
+                    : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={closeMobileMenu}
+              className="mt-2 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20b858] text-white px-5 py-3 rounded-xl text-sm font-bold transition-all"
+            >
+              <MessageCircle className="w-4 h-4 fill-current" />
+              Contactar por WhatsApp
+            </a>
           </div>
         </div>
       </nav>
@@ -465,75 +502,39 @@ export default function Home() {
         <HeroStudio3D whatsappLink={whatsappLink} isDark={isDark} />
       </div>
 
-      {/* ── QUIÉNES SOMOS (CON FONDO DE AURORA BOREAL) ────────────────────── */}
+      {/* ── QUIÉNES SOMOS ─────────────────────────────────────────────────── */}
       <section
         id="nosotros"
-        className={`py-28 relative overflow-hidden transition-colors duration-500 ${
-          isDark ? "bg-[#060e1a]" : "bg-gradient-to-b from-slate-50 via-teal-50/20 to-slate-100"
+        className={`py-16 sm:py-24 md:py-28 relative overflow-hidden transition-colors duration-500 ${
+          isDark ? "bg-[#070e1b]" : "bg-slate-50"
         }`}
       >
-        {/* ── AURORA BOREAL BACKGROUND EFFECT ─────────────────────────────────── */}
+        {/* Subtle, executive background lighting (clean & professional) */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Aurora Emerald Glow Ribbon */}
           <div
-            className={`absolute -top-32 left-1/4 w-[650px] h-[500px] rounded-full filter blur-[100px] opacity-25 aurora-layer-1 ${
-              isDark
-                ? "bg-gradient-to-r from-teal-800 via-emerald-800 to-cyan-800"
-                : "bg-gradient-to-r from-teal-200 via-emerald-100 to-cyan-200"
+            className={`absolute top-0 right-1/4 w-[500px] h-[350px] rounded-full filter blur-[120px] opacity-10 ${
+              isDark ? "bg-blue-600" : "bg-blue-300"
             }`}
           />
-          {/* Aurora Cyan / Sapphire Ribbon */}
           <div
-            className={`absolute top-1/4 -right-24 w-[600px] h-[550px] rounded-full filter blur-[120px] opacity-30 aurora-layer-2 ${
-              isDark
-                ? "bg-gradient-to-l from-sky-800 via-blue-800 to-indigo-800"
-                : "bg-gradient-to-l from-sky-200 via-blue-100 to-indigo-200"
+            className={`absolute bottom-0 left-1/4 w-[500px] h-[350px] rounded-full filter blur-[120px] opacity-10 ${
+              isDark ? "bg-cyan-600" : "bg-cyan-300"
             }`}
           />
-          {/* Aurora Warm / Gold Ethereal Shimmer */}
-          <div
-            className={`absolute -bottom-24 left-1/6 w-[700px] h-[450px] rounded-full filter blur-[100px] opacity-20 aurora-layer-3 ${
-              isDark
-                ? "bg-gradient-to-t from-amber-700/50 via-orange-800/40 to-rose-800/30"
-                : "bg-gradient-to-t from-amber-200 via-orange-100 to-rose-200"
-            }`}
-          />
-
-          {/* Flowing animated gradient veil */}
-          <div
-            className={`absolute inset-0 opacity-15 aurora-gradient-flow ${
-              isDark
-                ? "bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-800/20 via-cyan-900/10 to-transparent"
-                : "bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-200/30 via-cyan-100/20 to-transparent"
-            }`}
-          />
-
-          {/* Subtle noise/stars grid overlay */}
-          <div className="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:32px_32px] opacity-15" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Top section heading */}
-          <div className="text-center mb-16 md:mb-20">
-            <div
-              className={`inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border text-xs font-semibold backdrop-blur-md ${
-                isDark
-                  ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
-                  : "border-emerald-300 bg-emerald-50 text-emerald-700 shadow-sm"
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-              Conoce al Equipo Detrás de Cada Solución
-            </div>
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
             <h2
-              className={`text-4xl md:text-5xl font-black mb-5 tracking-tight ${
+              className={`text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight ${
                 isDark ? "text-white" : "text-slate-900"
               }`}
             >
               Quiénes Somos
             </h2>
             <p
-              className={`text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed ${
+              className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed ${
                 isDark ? "text-slate-300" : "text-slate-600"
               }`}
             >
@@ -542,55 +543,52 @@ export default function Home() {
           </div>
 
           {/* Executive Asymmetrical Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            {/* Left Column: Photo Card with Aurora Border */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            {/* Left Column: Photo Card (Executive, High-End & Clean) */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="relative group max-w-sm w-full">
-                {/* Aurora Outer Glow Rim */}
-                <div className="absolute -inset-1 rounded-[2.5rem] bg-gradient-to-tr from-emerald-400 via-cyan-400 to-indigo-500 opacity-70 group-hover:opacity-100 blur-lg transition duration-500" />
-
-                {/* Inner Card Container */}
+              <div className="relative max-w-sm w-full">
+                {/* Executive Card Container — Clean & Professional, no loud AI glow */}
                 <div
-                  className={`relative rounded-[2.3rem] p-3 border backdrop-blur-xl shadow-2xl transition-all duration-300 ${
+                  className={`relative rounded-3xl p-3.5 sm:p-4 border transition-all duration-300 shadow-xl ${
                     isDark
-                      ? "bg-slate-900/90 border-white/15"
-                      : "bg-white/95 border-slate-200"
+                      ? "bg-slate-900/95 border-slate-800 shadow-slate-950/60"
+                      : "bg-white border-slate-200/90 shadow-slate-200/60"
                   }`}
                 >
                   {/* Photo frame */}
-                  <div className="relative aspect-square rounded-[1.8rem] overflow-hidden bg-slate-950 shadow-inner">
+                  <div className="relative aspect-square rounded-2xl overflow-hidden bg-slate-950 border border-slate-800/40">
                     <img
                       src="/mi-perfil.png"
                       alt="Líder de Arquitectura & Desarrollo de CAEC"
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                      className="w-full h-full object-cover object-top hover:scale-[1.02] transition-transform duration-500"
                     />
 
-                    {/* Gradient bottom overlay on photo */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+                    {/* Gradient bottom overlay for clean text contrast */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
 
-                    {/* Status pill on photo */}
-                    <div className="absolute top-4 left-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-emerald-400/40 text-[11px] font-bold text-emerald-300 shadow-lg">
+                    {/* Status pill on photo — discreet & professional */}
+                    <div className="absolute top-3.5 left-3.5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-slate-700/60 text-[11px] font-medium text-emerald-400 shadow-md">
                       <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                       Disponible para Proyectos
                     </div>
 
-                    {/* Founder title card overlay */}
-                    <div className="absolute bottom-4 inset-x-4 text-center">
-                      <p className="text-white font-extrabold text-base tracking-wide drop-shadow-md">
+                    {/* Leader title card overlay */}
+                    <div className="absolute bottom-3.5 inset-x-3 text-center">
+                      <p className="text-white font-bold text-sm sm:text-base tracking-wide drop-shadow-sm">
                         Líder de Arquitectura &amp; Desarrollo
                       </p>
-                      <p className="text-cyan-300 font-medium text-xs">CAEC Software &amp; Digital Solutions</p>
+                      <p className="text-cyan-400 font-medium text-xs mt-0.5">CAEC Software &amp; Digital Solutions</p>
                     </div>
                   </div>
 
                   {/* Badges bar */}
-                  <div className="mt-4 px-2 pb-2 flex flex-wrap justify-center gap-2">
+                  <div className="mt-3.5 px-1 pb-1 flex flex-wrap justify-center gap-1.5 sm:gap-2">
                     {["Next.js", "Laravel", "React Native", "Three.js", "Cloud"].map((t) => (
                       <span
                         key={t}
-                        className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border ${
+                        className={`text-[11px] font-medium px-2.5 py-1 rounded-full border transition-colors ${
                           isDark
-                            ? "bg-slate-800/80 border-slate-700 text-slate-300"
+                            ? "bg-slate-800/70 border-slate-700/80 text-slate-300"
                             : "bg-slate-100 border-slate-200 text-slate-700"
                         }`}
                       >
@@ -722,7 +720,7 @@ export default function Home() {
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
       <section
         id="services"
-        className={`py-28 relative transition-colors duration-500 ${
+        className={`py-16 sm:py-24 md:py-28 relative transition-colors duration-500 ${
           isDark ? "bg-[#091120]" : "bg-[#f1f5f9]"
         }`}
       >
@@ -834,7 +832,7 @@ export default function Home() {
       {/* ── PROJECTS ─────────────────────────────────────────────────────── */}
       <section
         id="projects"
-        className={`py-28 relative transition-colors duration-500 ${
+        className={`py-16 sm:py-24 md:py-28 relative transition-colors duration-500 ${
           isDark ? "bg-[#070d18]" : "bg-[#f8fafc]"
         }`}
       >
@@ -949,13 +947,13 @@ export default function Home() {
 
       {/* ── CTA WHATSAPP ─────────────────────────────────────────────────── */}
       <section
-        className={`py-28 relative overflow-hidden transition-colors duration-500 ${
+        className={`py-16 sm:py-24 md:py-28 relative overflow-hidden transition-colors duration-500 ${
           isDark ? "bg-[#070d18]" : "bg-[#f8fafc]"
         }`}
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div
-            className={`relative rounded-3xl p-10 md:p-16 text-center overflow-hidden transition-all duration-300 shadow-2xl ${
+            className={`relative rounded-3xl p-7 sm:p-10 md:p-16 text-center overflow-hidden transition-all duration-300 shadow-2xl ${
               isDark
                 ? "bg-[#0e182a] border border-slate-700/60"
                 : "bg-white border border-slate-200"
@@ -1013,11 +1011,13 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {/* Brand */}
             <div className="flex flex-col gap-4">
-              <img
-                src="/logo-general.png"
-                alt="CAEC Software & Digital Solutions"
-                className="h-20 md:h-24 w-auto object-contain object-left"
-              />
+              <div className="relative inline-block w-fit">
+                <img
+                  src="/logo-general.png"
+                  alt="CAEC Software & Digital Solutions"
+                  className="h-20 md:h-24 w-auto object-contain object-left feather-edges [mask-image:radial-gradient(ellipse_at_center,_black_60%,_transparent_98%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,_black_60%,_transparent_98%)]"
+                />
+              </div>
               <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
                 Transformamos ideas en soluciones digitales de alto impacto. Desarrollo web, apps y software a medida.
               </p>

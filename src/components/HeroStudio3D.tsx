@@ -467,7 +467,7 @@ export default function HeroStudio3D({ whatsappLink, isDark = true }: { whatsapp
   }, []);
 
   return (
-    <section className={`relative w-full h-[92vh] min-h-[700px] max-h-[1080px] overflow-hidden select-none transition-colors duration-500 ${isDark ? "bg-[#0f1f35]" : "bg-[#0b172a]"}`}>
+    <section className={`relative w-full h-[70vh] sm:h-[82vh] md:h-[92vh] min-h-[480px] sm:min-h-[580px] md:min-h-[700px] max-h-[1080px] overflow-hidden select-none transition-colors duration-500 ${isDark ? "bg-[#0f1f35]" : "bg-[#0b172a]"}`}>
       {/* WebGL canvas */}
       <div
         ref={mountRef}
@@ -476,42 +476,44 @@ export default function HeroStudio3D({ whatsappLink, isDark = true }: { whatsapp
       />
 
       {/* ── TOP BADGE ONLY ── */}
-      <div className="absolute inset-x-0 top-0 z-20 flex flex-col items-center text-center px-4 pt-7 md:pt-9 pointer-events-none">
-        <div className="pointer-events-auto inline-flex items-center gap-2 px-5 py-2 rounded-full border border-cyan-400/30 bg-slate-950/70 backdrop-blur-md text-xs md:text-sm font-bold text-cyan-300 shadow-xl tracking-wider uppercase">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-          Tecnología que Impulsa tu Negocio
+      <div className="absolute inset-x-0 top-0 z-20 flex flex-col items-center text-center px-4 pt-5 sm:pt-7 md:pt-9 pointer-events-none">
+        <div className="pointer-events-auto inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-5 sm:py-2 rounded-full border border-cyan-400/30 bg-slate-950/70 backdrop-blur-md text-[10px] sm:text-xs md:text-sm font-bold text-cyan-300 shadow-xl tracking-wide sm:tracking-wider uppercase max-w-[90vw] text-center">
+          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-cyan-400 animate-pulse flex-shrink-0" />
+          <span>Tecnología que Impulsa tu Negocio</span>
         </div>
       </div>
 
       {/* ── BUTTONS (bottom center, above ring) ── */}
-      <div className="absolute inset-x-0 bottom-8 z-20 flex justify-center gap-4 flex-wrap px-4 pointer-events-none">
+      <div className="absolute inset-x-0 bottom-5 sm:bottom-8 z-20 flex flex-col sm:flex-row justify-center items-center gap-2.5 sm:gap-4 px-5 pointer-events-none">
         <a
           href={whatsappLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="pointer-events-auto group inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white font-bold text-sm md:text-base shadow-[0_0_28px_rgba(59,130,246,0.65)] hover:shadow-[0_0_40px_rgba(59,130,246,0.85)] hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20"
+          className="pointer-events-auto w-full sm:w-auto group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-3.5 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white font-bold text-sm shadow-[0_0_28px_rgba(59,130,246,0.65)] hover:shadow-[0_0_40px_rgba(59,130,246,0.85)] hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20"
         >
-          <MessageCircle className="w-5 h-5" />
+          <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
           Adquirir Ahora
           <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </a>
-        <a
-          href="#nosotros"
-          className="pointer-events-auto inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white/10 hover:bg-white/18 text-white font-semibold text-sm md:text-base border border-white/20 backdrop-blur-md hover:scale-105 transition-all duration-300 shadow-xl"
-        >
-          Quiénes Somos
-        </a>
-        <a
-          href="#services"
-          className="pointer-events-auto inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-slate-900/60 hover:bg-slate-900/80 text-cyan-300 font-semibold text-sm md:text-base border border-cyan-500/30 backdrop-blur-md hover:scale-105 transition-all duration-300 shadow-xl"
-        >
-          Ver Servicios
-        </a>
+        <div className="flex gap-2.5 w-full sm:w-auto">
+          <a
+            href="#nosotros"
+            className="pointer-events-auto flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-3 sm:px-7 sm:py-3.5 rounded-full bg-white/10 hover:bg-white/18 text-white font-semibold text-xs sm:text-sm border border-white/20 backdrop-blur-md hover:scale-105 transition-all duration-300 shadow-xl"
+          >
+            Quiénes Somos
+          </a>
+          <a
+            href="#services"
+            className="pointer-events-auto flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-3 sm:px-7 sm:py-3.5 rounded-full bg-slate-900/60 hover:bg-slate-900/80 text-cyan-300 font-semibold text-xs sm:text-sm border border-cyan-500/30 backdrop-blur-md hover:scale-105 transition-all duration-300 shadow-xl"
+          >
+            Ver Servicios
+          </a>
+        </div>
       </div>
 
-      {/* Interaction hint */}
-      <div className={`absolute bottom-2 inset-x-0 flex justify-center z-10 transition-opacity duration-500 pointer-events-none ${isInteracting ? "opacity-20" : "opacity-70"}`}>
-        <p className="text-[11px] text-slate-400 font-medium tracking-wide">
+      {/* Interaction hint — hidden on mobile to save space */}
+      <div className={`hidden sm:flex absolute bottom-1 sm:bottom-2 inset-x-0 justify-center z-10 transition-opacity duration-500 pointer-events-none ${isInteracting ? "opacity-20" : "opacity-70"}`}>
+        <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium tracking-wide">
           ✦ Mueve el cursor o arrastra la canica 3D
         </p>
       </div>

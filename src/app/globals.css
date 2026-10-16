@@ -60,6 +60,21 @@ body {
   box-shadow: 0 0 20px rgba(59,130,246,0.35);
 }
 
+/* ── Feather edges utilities (bordes difuminados para logos e imágenes) ── */
+.feather-edges {
+  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 55%, rgba(0, 0, 0, 0) 98%);
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 55%, rgba(0, 0, 0, 0) 98%);
+}
+
+.feather-edges-rect {
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent),
+              linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  mask-composite: intersect;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent),
+                      linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  -webkit-mask-composite: source-in;
+}
+
 /* ── Modal slide-in animation ── */
 @keyframes modalIn {
   from {
