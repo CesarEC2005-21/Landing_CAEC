@@ -838,108 +838,221 @@ export default function Home() {
       >
         <div className="absolute inset-0 bg-blue-900/5 blur-[150px] -z-10 pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-16 text-center">
+          {/* Section Heading */}
+          <div className="mb-14 sm:mb-20 text-center max-w-3xl mx-auto">
+            <div
+              className={`inline-flex items-center gap-2 mb-3.5 px-3.5 py-1.5 rounded-full border text-xs font-semibold ${
+                isDark
+                  ? "border-cyan-500/30 bg-cyan-500/10 text-cyan-300"
+                  : "border-blue-200 bg-blue-50 text-blue-700"
+              }`}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+              Proyectos en Producción
+            </div>
             <h2
-              className={`text-4xl md:text-5xl font-black mb-4 tracking-tight ${
+              className={`text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight ${
                 isDark ? "text-white" : "text-slate-900"
               }`}
             >
-              Casos de Éxito
+              Casos Reales de Éxito
             </h2>
             <p
-              className={`text-base md:text-lg font-light ${
-                isDark ? "text-slate-400" : "text-slate-600"
+              className={`text-sm sm:text-base md:text-lg font-light leading-relaxed ${
+                isDark ? "text-slate-300" : "text-slate-600"
               }`}
             >
-              Proyectos reales que generan resultados medibles. Haz clic para ver detalles.
+              Plataformas comerciales y sistemas corporativos concebidos a medida. Haz clic en cualquiera para explorar su arquitectura, interfaz y módulos.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6">
-            {PROJECTS.map((project) => (
-              <button
+          {/* Large, high-impact 2-column showcase */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
+            {PROJECTS.map((project, idx) => (
+              <div
                 key={project.id}
                 onClick={() => setOpenProject(project)}
-                className={`group text-left relative rounded-3xl border overflow-hidden transition-all duration-500 shadow-2xl hover:-translate-y-1 ${
+                className={`group cursor-pointer text-left relative rounded-[2rem] border overflow-hidden transition-all duration-500 shadow-xl hover:-translate-y-1.5 flex flex-col ${
                   isDark
-                    ? "bg-slate-900/60 border-slate-800 hover:border-blue-500/60 hover:shadow-[0_20px_60px_rgba(59,130,246,0.2)]"
-                    : "bg-white border-slate-200 hover:border-blue-400 hover:shadow-[0_20px_60px_rgba(59,130,246,0.12)] text-slate-900"
+                    ? "bg-slate-900/80 border-slate-800/90 hover:border-cyan-500/50 hover:shadow-[0_24px_60px_rgba(6,182,212,0.12)]"
+                    : "bg-white border-slate-200/90 hover:border-blue-400 hover:shadow-[0_24px_60px_rgba(59,130,246,0.14)] text-slate-900"
                 }`}
               >
-                {/* Project thumb */}
+                {/* Browser / Studio Mockup Frame */}
                 <div
-                  className={`aspect-video relative overflow-hidden ${
-                    isDark ? "bg-slate-950" : "bg-slate-100"
+                  className={`relative p-3.5 sm:p-5 border-b transition-colors ${
+                    isDark ? "bg-slate-950/70 border-slate-800/80" : "bg-slate-100/70 border-slate-200/80"
                   }`}
                 >
-                  <img
-                    src={project.images[0]}
-                    alt={project.title}
-                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-                  />
-                  <div
-                    className={`absolute inset-0 ${
-                      isDark
-                        ? "bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"
-                        : "bg-gradient-to-t from-black/50 via-transparent to-transparent"
-                    }`}
-                  />
+                  {/* Window bar */}
+                  <div className="flex items-center justify-between mb-3 px-1">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-amber-400/70" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/70" />
+                      <span className={`ml-2 text-[11px] font-mono font-medium truncate max-w-[170px] sm:max-w-xs ${
+                        isDark ? "text-slate-500" : "text-slate-400"
+                      }`}>
+                        {project.link ? project.link.replace("https://", "") : `${project.title.toLowerCase().replace(/[^a-z0-9]/g, "")}.caec.app`}
+                      </span>
+                    </div>
 
-                  {/* View button on hover */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white font-bold text-sm shadow-xl">
-                      <ExternalLink className="w-4 h-4" />
-                      Ver Detalles
+                    <div className="flex items-center gap-2">
+                      {project.link ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          En Vivo
+                        </span>
+                      ) : (
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                          isDark ? "bg-slate-800/80 border-slate-700 text-slate-400" : "bg-slate-200 border-slate-300 text-slate-600"
+                        }`}>
+                          Software ERP
+                        </span>
+                      )}
+                      <span className="font-mono text-xs font-bold text-slate-500/70 ml-1">
+                        0{idx + 1}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* High Definition Project Showcase Image */}
+                  <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-slate-950 border border-black/10 shadow-inner">
+                    <img
+                      src={project.images[0]}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-top transition-all duration-700 group-hover:scale-[1.03]"
+                    />
+
+                    {/* Subtle atmospheric vignette */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-300" />
+
+                    {/* Interactive hover overlay button */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[2px] bg-slate-950/30">
+                      <div className="flex items-center gap-2 px-6 py-3 rounded-full bg-slate-900/90 text-white font-bold text-xs sm:text-sm shadow-2xl border border-cyan-400/40 transform group-hover:scale-105 transition-transform duration-300">
+                        <ExternalLink className="w-4 h-4 text-cyan-400" />
+                        Ver Pantallas &amp; Módulos
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Card body */}
-                <div className="p-6">
-                  <div className="flex flex-wrap items-center gap-2 mb-3">
-                    <span
-                      className={`px-3 py-1 rounded-full border text-xs font-bold ${
-                        isDark
-                          ? "bg-blue-500/10 border-blue-500/30 text-blue-400"
-                          : "bg-blue-50 border-blue-200 text-blue-700"
-                      }`}
-                    >
-                      {project.tag1}
-                    </span>
-                    <span
-                      className={`px-3 py-1 rounded-full border text-xs font-bold ${
-                        isDark
-                          ? "bg-indigo-500/10 border-indigo-500/30 text-indigo-400"
-                          : "bg-indigo-50 border-indigo-200 text-indigo-700"
-                      }`}
-                    >
-                      {project.tag2}
-                    </span>
-                    {project.link && (
-                      <span className="ml-auto inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 border border-emerald-500/40 text-emerald-400">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                        En vivo
+                {/* Card Information Body */}
+                <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between">
+                  <div>
+                    {/* Tags */}
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
+                      <span
+                        className={`px-3 py-1 rounded-full border text-xs font-semibold ${
+                          isDark
+                            ? "bg-blue-500/10 border-blue-500/30 text-blue-300"
+                            : "bg-blue-50 border-blue-200 text-blue-700"
+                        }`}
+                      >
+                        {project.tag1}
                       </span>
-                    )}
+                      <span
+                        className={`px-3 py-1 rounded-full border text-xs font-semibold ${
+                          isDark
+                            ? "bg-indigo-500/10 border-indigo-500/30 text-indigo-300"
+                            : "bg-indigo-50 border-indigo-200 text-indigo-700"
+                        }`}
+                      >
+                        {project.tag2}
+                      </span>
+                      <span
+                        className={`text-xs ml-auto font-medium ${
+                          isDark ? "text-slate-400" : "text-slate-500"
+                        }`}
+                      >
+                        {project.images.length} pantallas
+                      </span>
+                    </div>
+
+                    {/* Title & Subtitle */}
+                    <h3
+                      className={`text-xl sm:text-2xl font-black mb-1.5 tracking-tight transition-colors ${
+                        isDark
+                          ? "text-white group-hover:text-cyan-300"
+                          : "text-slate-900 group-hover:text-blue-600"
+                      }`}
+                    >
+                      {project.title}
+                    </h3>
+                    <p
+                      className={`text-xs sm:text-sm font-semibold mb-3 ${
+                        isDark ? "text-cyan-400" : "text-blue-600"
+                      }`}
+                    >
+                      {project.subtitle}
+                    </p>
+
+                    {/* Description */}
+                    <p
+                      className={`text-sm sm:text-base font-light leading-relaxed mb-6 line-clamp-3 ${
+                        isDark ? "text-slate-300" : "text-slate-600"
+                      }`}
+                    >
+                      {project.desc}
+                    </p>
                   </div>
-                  <h3
-                    className={`text-lg font-bold mb-2 transition-colors ${
-                      isDark
-                        ? "text-white group-hover:text-cyan-300"
-                        : "text-slate-900 group-hover:text-blue-600"
-                    }`}
-                  >
-                    {project.title}
-                  </h3>
-                  <p
-                    className={`text-sm font-light leading-relaxed line-clamp-3 ${
-                      isDark ? "text-slate-400" : "text-slate-600"
-                    }`}
-                  >
-                    {project.desc}
-                  </p>
+
+                  {/* Tech stack chips & action footer */}
+                  <div className="pt-4 border-t border-slate-200/60 dark:border-slate-800/80">
+                    <div className="flex flex-wrap gap-1.5 mb-5">
+                      {project.tech.slice(0, 4).map((tech, tIdx) => (
+                        <span
+                          key={tIdx}
+                          className={`text-[11px] font-medium px-2.5 py-0.5 rounded-md border ${
+                            isDark
+                              ? "bg-slate-950/50 border-slate-800 text-slate-400"
+                              : "bg-slate-50 border-slate-200 text-slate-600"
+                          }`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.tech.length > 4 && (
+                        <span
+                          className={`text-[11px] font-medium px-2 py-0.5 rounded-md ${
+                            isDark ? "text-slate-500" : "text-slate-400"
+                          }`}
+                        >
+                          +{project.tech.length - 4} más
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span
+                        className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold transition-transform group-hover:translate-x-1 ${
+                          isDark ? "text-cyan-400" : "text-blue-600"
+                        }`}
+                      >
+                        Explorar Caso de Estudio
+                        <ArrowRight className="w-4 h-4" />
+                      </span>
+
+                      {project.link && (
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+                            isDark
+                              ? "bg-slate-800/80 hover:bg-slate-700 text-slate-200 border-slate-700"
+                              : "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200"
+                          }`}
+                        >
+                          Visitar Web
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </button>
+              </div>
             ))}
           </div>
         </div>
